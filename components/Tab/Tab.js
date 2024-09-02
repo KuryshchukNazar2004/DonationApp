@@ -1,10 +1,9 @@
+import React, {useRef, useState} from 'react';
 import {Pressable, Text} from 'react-native';
 import PropTypes from 'prop-types';
-import {useRef, useState} from 'react';
 
 import style from './style';
-import { horizontalScale } from '../../assets/styles/scaling';
-
+import {horizontalScale} from '../../assets/styles/scaling';
 const Tab = props => {
   const [width, setWidth] = useState(0);
   const textRef = useRef(null);
@@ -12,12 +11,10 @@ const Tab = props => {
   const tabWidth = {
     width: horizontalScale(paddingHorizontal * 2 + width),
   };
-
   return (
     <Pressable
-      disabled={props.isInactive}
       style={[style.tab, props.isInactive && style.inactiveTab, tabWidth]}
-      onPress={() => props.onPress()}>
+      onPress={() => props.onPress(props.tabId)}>
       <Text
         onTextLayout={event => {
           setWidth(event.nativeEvent.lines[0].width);
@@ -30,12 +27,14 @@ const Tab = props => {
   );
 };
 
+//accidentally types default in the video, but should actually be defaultProps
 Tab.defaultProps = {
   isInactive: false,
   onPress: () => {},
 };
 
 Tab.propTypes = {
+  tabId: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   isInactive: PropTypes.bool,
   onPress: PropTypes.func,
