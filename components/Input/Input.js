@@ -37,7 +37,7 @@ Input.propTypes = {
   placeholder: PropTypes.string,
   label: PropTypes.string.isRequired,
   onChangeText: PropTypes.func,
-  secureTextEntry: PropTypes.bool
+  secureTextEntry: PropTypes.bool,
 };
 
 export default Input;
