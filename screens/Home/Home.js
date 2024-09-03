@@ -25,14 +25,11 @@ import {updateSelectedDonationId} from '../../redux/reducers/Donations';
 
 import globalStyle from '../../assets/styles/globalStyle';
 import style from './style';
+import {resetToInitialState} from '../../redux/reducers/User';
+import { logOut } from '../../api/user';
 
 const Home = ({navigation}) => {
-  // Using the useSelector hook to select the "user" slice of the store
-  // This will return the user object containing firstName, lastName and userId fields
   const user = useSelector(state => state.user);
-
-  // Using the useDispatch hook to get a reference to the dispatch function
-  // This function allows us to dispatch actions to update the store
   const dispatch = useDispatch();
   const categories = useSelector(state => state.categories);
   const donations = useSelector(state => state.donations);
@@ -75,16 +72,23 @@ const Home = ({navigation}) => {
           <View>
             <Text style={style.headerIntroText}>Hello, </Text>
             <View style={style.username}>
-              <Header
-                title={user.firstName + ' ' + user.lastName[0] + '. 👋'}
-              />
+              <Header title={user.displayName + '👋'} />
             </View>
           </View>
-          <Image
-            source={{uri: user.profileImage}}
-            style={style.profileImage}
-            resizeMode={'contain'}
-          />
+          <View>
+            <Image
+              source={{uri: user.profileImage}}
+              style={style.profileImage}
+              resizeMode={'contain'}
+            />
+            <Pressable
+              onPress={async () => {
+                dispatch(resetToInitialState());
+                await logOut();
+              }}>
+              <Header type={3} title={'Logout'} color={'#156CF7'} />
+            </Pressable>
+          </View>
         </View>
         <View style={style.searchBox}>
           <Search />
@@ -106,10 +110,6 @@ const Home = ({navigation}) => {
               if (isLoadingCategories) {
                 return;
               }
-              console.log(
-                'User has reached the end and we are getting more data for page number ',
-                categoryPage,
-              );
               setIsLoadingCategories(true);
               let newData = pagination(
                 categories.categories,
