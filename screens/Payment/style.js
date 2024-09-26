@@ -11,10 +11,13 @@ const style = StyleSheet.create({
   donationAmountDescription: {
     marginTop: verticalScale(12),
   },
-  loadingText: {
-    display: 'flex',
+  loadingTextContainer: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  loadingText: {
+    fontSize: 16
   }
 });
 

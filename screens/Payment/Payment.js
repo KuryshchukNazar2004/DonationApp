@@ -3,7 +3,6 @@ import globalStyle from '../../assets/styles/globalStyle';
 import style from './style';
 import Header from '../../components/Header/Header';
 import {useSelector} from 'react-redux';
-import Button from '../../components/Button/Button';
 import BackButton from '../../components/BackButton/BackButton';
 import {useEffect, useState} from 'react';
 import axios from 'axios';
@@ -38,7 +37,11 @@ const Payment = ({amount, currency, description, navigation}) => {
   }, [donationItemInformation, amount, currency, description]);
 
   if (!liqpayData) {
-    return <Text style={style.loadingText}>Loading...</Text>;
+    return (
+      <View style={style.loadingTextContainer}>
+        <Text style={style.loadingText}>Loading...</Text>
+      </View>
+    );
   }
 
   // Генеруємо форму для LiqPay
@@ -59,20 +62,20 @@ const Payment = ({amount, currency, description, navigation}) => {
 
   return (
     <SafeAreaView style={[globalStyle.backgroundWhite, globalStyle.flex]}>
-        <BackButton
-          onPress={() => {
-            navigation.goBack();
-          }}
-        />
-        <Header title={'Making Donation'} />
-        <Text style={style.donationAmountDescription}>
-          You are about to donate {donationItemInformation.price}
-        </Text>
-        <WebView
-          originWhitelist={['*']}
-          source={{html: formHtml}}
-          style={{flex: 1}}
-        />
+      <BackButton
+        onPress={() => {
+          navigation.goBack();
+        }}
+      />
+      <Header title={'Making Donation'} />
+      <Text style={style.donationAmountDescription}>
+        You are about to donate {donationItemInformation.price}
+      </Text>
+      <WebView
+        originWhitelist={['*']}
+        source={{html: formHtml}}
+        style={{flex: 1}}
+      />
     </SafeAreaView>
   );
 };
